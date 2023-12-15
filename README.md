@@ -1,3 +1,6 @@
+![image](https://github.com/yeoiugh8/Google-Sheets-File-Backup/assets/153898219/06775746-8d18-44c9-8834-5f0cd27861a8)
+
+
 วิธีใช้
 
 เริ่มจากสร้างโครงการใหม่
