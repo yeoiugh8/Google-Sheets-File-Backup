@@ -42,13 +42,25 @@ class Protection extends SheetsManager {
     return DriveApp.getFilesByName(fileName).next().getId();
   }
 
-  async moveSpreadsheets() {
+  async moveSpreadsheets(maximumCopies = 2) {
     const folderId = await this.createFolder();
     const fileId = await this.duplicateSpreadsheet();
 
-    const case2 = DriveApp.getFolderById(folderId);
+    const dest = DriveApp.getFolderById(folderId);
 
-    DriveApp.getFileById(fileId).moveTo(case2);
+    const files = DriveApp.getFolderById(folderId).getFiles();
+
+    let num = 0;
+
+    while (files.hasNext()) {
+      const id = files.next().getId();
+      num++;
+
+      if (num >= maximumCopies) DriveApp.getFileById(id).setTrashed(true);
+    }
+
+    DriveApp.getFileById(fileId).moveTo(dest);
+
   }
 }
 
@@ -61,5 +73,10 @@ const ชื่อที่ต้องการไว้เรียกใช�
 
 
 async function duplicator() {
+
+  // วิธีเรียกใช้ที่ 1 จำกัดสูงสุด 2 ไฟล์
   await ชื่อที่ต้องการไว้เรียกใช้.moveSpreadsheets();
+
+  // แต่หากต้องการมากกว่า 2 ไฟล์ให้ใส่ตัวเลขที่ต้องการ
+  await ชื่อที่ต้องการไว้เรียกใช้.moveSpreadsheets(จำนวน); 
 }
